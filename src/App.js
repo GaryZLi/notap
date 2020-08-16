@@ -4,7 +4,7 @@ import Container from './Containers';
 import Header from './Containers/Header';
 import Toolbar from './Containers/Toolbar';
 import TextEditor from './Containers/TextEditor';
-
+import Export from './Containers/Export';
 
 import axios from 'axios';
 
@@ -18,6 +18,7 @@ const App = () => {
     return (
         <Container>
             <Header/>
+            <Export/>
             <Toolbar/>
             <TextEditor/>
             <div onClick={() => axios.post('http://localhost:5000/process_text', {'data': 'print(x)'})
