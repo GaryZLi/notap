@@ -28,7 +28,14 @@ const viewReducer = (state = initialState, action) => {
     
         case types.UPDATE_LINE_TEXT:
             const lines = state.lines;
-            lines[action.lineNumber - 1] = action.text;
+
+            if (typeof lines[action.lineNumber - 1] === 'string') {
+                lines[action.lineNumber - 1] = action.text;
+            }
+            else {
+                lines[action.lineNumber - 1].text = action.text;
+            }
+
             return {
                 ...state,
                 lines,

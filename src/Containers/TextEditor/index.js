@@ -35,7 +35,6 @@ const TextEditor = ({
 
     useEffect(() => {
         const handleKeyPress = e => {
-            // console.log(window.getSelection().toString())
             if (e.key === 'Enter') {
                 if (typeof lines[currentLineNumber-1] === 'string') {
                     if (window.getSelection().anchorOffset === window.getSelection().focusOffset) {
@@ -59,12 +58,12 @@ const TextEditor = ({
                 }
             }
             else if (e.key === 'ArrowUp') {
-                if (currentLineNumber > 1) {
+                if (currentLineNumber > 1 && typeof lines[currentLineNumber - 1] === 'string') {
                     updateCurrentLineNumber(currentLineNumber - 1);
                 }
             }
             else if (e.key === 'ArrowDown') {
-                if (currentLineNumber < lines.length) {
+                if (currentLineNumber < lines.length && typeof lines[currentLineNumber - 1] === 'string') {
                     updateCurrentLineNumber(currentLineNumber + 1);
                 }
             }
