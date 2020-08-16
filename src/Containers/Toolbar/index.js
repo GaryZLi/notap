@@ -17,6 +17,7 @@ import number from '../../picSrc/Numbered_List.png';
 import { 
     updateLines,
     updateLineType,
+    updateLineText,
 } from '../../actions/view';
 
 const useStyles = makeStyles({
@@ -48,11 +49,15 @@ const Toolbar = ({
     currentLineNumber,
     currentLineText,
     updateLineType,
+    updateLineText
 }) => {
     const classes = useStyles();
 
+    let anchor = window.getSelection().anchorOffset;
+    let focus = window.getSelection().focusOffset;
+    let text;
+
     const pasteHtmlAtCaret = (html, style) => {
-        console.log(window.getSelection())
 
         let sel, range;
         if (window.getSelection) {
@@ -68,10 +73,8 @@ const Toolbar = ({
                 el.innerHTML = html;
                 if (style) {
                     el.firstChild.style[style.key] = style.val;
-console.log(style)
-
                 }
-console.log(el.firstChild)
+
                 let frag = document.createDocumentFragment(), node, lastNode;
                 while ( (node = el.firstChild) ) {
                     lastNode = frag.appendChild(node);
@@ -86,6 +89,16 @@ console.log(el.firstChild)
                     sel.removeAllRanges();
                     sel.addRange(range);
                 }
+
+                if (anchor < focus) {
+                    text = currentLineText.slice(0, anchor);
+
+                    updateLineText(lastNode, currentLineNumber)
+                }
+                else {
+                    text = currentLineText.slice(0, focus);
+                    updateLineText(lastNode, currentLineNumber)
+                }
             }
         } else if (document.selection && document.selection.type !== "Control") {
             // IE < 9
@@ -98,14 +111,79 @@ console.log(el.firstChild)
         if (type === 'code') {
             updateLineType(currentLineNumber)
         }
+        else if (type === 'bold') {
+            anchor = window.getSelection().anchorOffset;
+            focus = window.getSelection().focusOffset;
+
+            if (anchor > focus) {
+                text = currentLineText.slice(focus, anchor);
+            }
+            else {
+                text = currentLineText.slice(anchor, focus);
+            }
+
+            pasteHtmlAtCaret(`<b>${text}</b>`)
+        }
+        else if (type === 'color') {
+            anchor = window.getSelection().anchorOffset;
+            focus = window.getSelection().focusOffset;
+            
+            if (anchor > focus) {
+                text = currentLineText.slice(focus, anchor);
+            }
+            else {
+                text = currentLineText.slice(anchor, focus);
+            }
+
+            pasteHtmlAtCaret(`<span>${text}</span>`, {
+                key: 'color',
+                val: '#038cfc'
+            })
+        }
         else if (type === 'highlight') {
-            pasteHtmlAtCaret('<span>hi</span>', {
+            anchor = window.getSelection().anchorOffset;
+            focus = window.getSelection().focusOffset;
+
+            if (anchor > focus) {
+                text = currentLineText.slice(focus, anchor);
+            }
+            else {
+                text = currentLineText.slice(anchor, focus);
+            }
+
+            pasteHtmlAtCaret(`<span>${text}</span>`, {
                 key: 'backgroundColor',
-                val: 'red',
+                val: 'orange',
+            })
+        }
+        else if (type === 'underline') {
+            const anchor = window.getSelection().anchorOffset;
+            const focus = window.getSelection().focusOffset;
+            let text;
+            if (anchor > focus) {
+                text = currentLineText.slice(focus, anchor);
+            }
+            else {
+                text = currentLineText.slice(anchor, focus);
+            }
+
+            pasteHtmlAtCaret(`<span>${text}</span>`, {
+                key: 'textDecoration',
+                val: 'underline',
             })
         }
         else if (type === 'italic') {
-            pasteHtmlAtCaret(`<span>${currentLineText.slice(window.getSelection().anchorOffset, window.getSelection().focusOffset)}</span>`, {
+            const anchor = window.getSelection().anchorOffset;
+            const focus = window.getSelection().focusOffset;
+            let text;
+            if (anchor > focus) {
+                text = currentLineText.slice(focus, anchor);
+            }
+            else {
+                text = currentLineText.slice(anchor, focus);
+            }
+
+            pasteHtmlAtCaret(`<span>${text}</span>`, {
                 key: 'fontStyle',
                 val: 'italic',
             })
@@ -115,11 +193,11 @@ console.log(el.firstChild)
     return (
         <div className={classes.container}>
             <div className={classes.root}>
-                <img className={classes.tool} src={bold} alt='bold' onClick={() => pasteHtmlAtCaret(`<b>hi</b>`)}/>
-                <img className={classes.tool} src={color} alt='color'/>
+                <img className={classes.tool} src={bold} alt='bold' onClick={() => handleClick('bold')}/>
+                <img className={classes.tool} src={color} alt='color' onClick={() => handleClick('color')}/>
                 <img className={classes.tool} src={highlight} alt='highlight' onClick={() => handleClick('highlight')}/>
                 <img className={classes.tool} src={italic} alt='italic' onClick={() => handleClick('italic')}/>
-                <img className={classes.tool} src={underline} alt='underline'/>
+                <img className={classes.tool} src={underline} alt='underline' onClick={() => handleClick('underline')}/>
                 <img className={classes.tool} src={left} alt='left'/>
                 <img className={classes.tool} src={center} alt='center'/>
                 <img className={classes.tool} src={right} alt='right'/>
@@ -142,6 +220,7 @@ const mapStateToProps = ({view}) => {
 const mapDispatchToProps = {
     updateLines,
     updateLineType,
+    updateLineText,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);

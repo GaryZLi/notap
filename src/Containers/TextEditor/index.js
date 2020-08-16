@@ -70,7 +70,8 @@ const TextEditor = ({
             else if (e.key === 'Backspace' &&
                 currentLineNumber > 1 &&
                 window.getSelection().anchorOffset === 0 &&
-                window.getSelection().anchorOffset === window.getSelection().focusOffset
+                window.getSelection().anchorOffset === window.getSelection().focusOffset &&
+                typeof lines[currentLineNumber - 1] === 'string'
             ) {
                 const a = lines.slice(0, currentLineNumber - 2);
                 const b = lines.slice(currentLineNumber);

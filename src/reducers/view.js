@@ -35,8 +35,10 @@ const viewReducer = (state = initialState, action) => {
                 temp[action.lineNumber - 1] = action.text;
             }
             else {
+                console.log(action.text, 'hehe')
                 temp[action.lineNumber - 1].text = action.text;
             }
+            
 
             return {
                 ...state,
