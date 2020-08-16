@@ -2,7 +2,7 @@
 # flask server to process text
 
 import sys
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from PySide2 import QtWidgets
 import syntax
 
@@ -16,4 +16,4 @@ def process_text():
     editor = QtWidgets.QPlainTextEdit()
     highlighter = syntax.PythonHighlighter(editor.document())
     processed_code = highlighter.highlightBlock(data["data"])
-    return {"data": processed_code}
+    return jsonify({"data": processed_code})
