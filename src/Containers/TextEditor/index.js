@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     root: {
         height: '100%',
         width: '70%',
-        backgroundColor: 'gray',
+        backgroundColor: '#1c1c1c',
         cursor: 'default',
         outline: 'none',
     },

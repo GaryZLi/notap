@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     container: {
         height: '5%',
         width: '100%',
-        backgroundColor: '#dbdbdb',
+        backgroundColor: '#2d2d2d',
         display: 'flex',
         justifyContent: 'center',
     },

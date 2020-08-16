@@ -7,6 +7,7 @@ const useStyles = makeStyles({
         minWidth: 40,
         width: 40,
         userSelect: 'none',
+        color: 'white'
     },
 });
 
