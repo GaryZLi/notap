@@ -7,6 +7,7 @@ from PySide2 import QtWidgets
 import syntax
 
 app = Flask(__name__)
+app.config["CORS_HEADERS"] = "Content-Type"
 qapp = QtWidgets.QApplication(sys.argv)
 
 
