@@ -1,5 +1,11 @@
 import React from 'react';
-
+import {Button} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
+const useStyles = makeStyles({
+    root: {
+        color: "#3F91CF",
+    }
+});
 const Export = () => {
   var textFile = null,
   makeTextFile = function (text) {
@@ -15,7 +21,8 @@ const Export = () => {
 
     return textFile;
   };
-    return <a href={makeTextFile("# HELLO")} download={makeTextFile("# HELLO")}><button>Save File</button></a>;
+    const classes = useStyles();
+    return <a href={makeTextFile("# HELLO")} download={makeTextFile("# HELLO")}><Button className={classes.root} style={{float: 'right', marginRight:'20px'}} variant="contained">Save File</Button></a>;
   };
 
 export default Export;

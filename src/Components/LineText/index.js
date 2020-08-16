@@ -17,8 +17,8 @@ const useStyles = makeStyles({
         outline: 'none',
         border: 'none',
         backgroundColor: 'inherit',
-        color: 'white',
         wordWrap: 'break-word',
+        color: 'white'
         // cursor: 'default',
     },
 });
