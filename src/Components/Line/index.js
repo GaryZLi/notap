@@ -12,6 +12,7 @@ const useStyles = makeStyles({
         minHeight: 30,
         width: '100%',
         alignItems: 'center',
+
         '&:hover': {
             backgroundColor: '#b5b3b3',
         }
@@ -29,7 +30,7 @@ const Line = ({
     return (
         <div className={classes.default}
             style={{backgroundColor: currentLineNumber === number? '#b5b3b3' : 'inherit'}}
-            onClick={() => updateCurrentLineNumber(number)}
+            onMouseDown={() => updateCurrentLineNumber(number)}
         >
             <LineNumber number={number}/>
             <LineText text={text} number={number}/>

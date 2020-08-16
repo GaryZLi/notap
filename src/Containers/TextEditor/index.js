@@ -26,25 +26,26 @@ const useStyles = makeStyles({
 
 const TextEditor = ({
     lines,
-    currentLineText,
     currentLineNumber,
     updateLines,
     updateCurrentLineNumber,
 }) => {
     const classes = useStyles();
 
+    // window.getSelection().anchorOffset
+    // window.getSelection().extentOffset
     useEffect(() => {
         const handleKeyPress = e => {
-            if (e.key === 'Enter') {
-                lines.splice(currentLineNumber, 0, []);
-                // const a = lines.slice(0, currentLineNumber);
-                // a.push([]);
-                // const b = lines.slice(currentLineNumber);
-                // updateLines([
-                //     ...a,
-                //     ...b
-                // ]);
-
+            if (e.key === 'Enter' &&
+                window.getSelection().anchorOffset === window.getSelection().focusOffset
+            ) {
+                lines.splice(
+                    currentLineNumber-1,
+                    1,
+                    lines[currentLineNumber-1].slice(0, window.getSelection().anchorOffset),
+                    lines[currentLineNumber-1].slice(window.getSelection().anchorOffset)
+                );
+                
                 updateLines(lines);
                 updateCurrentLineNumber(currentLineNumber + 1);
             }
@@ -54,7 +55,25 @@ const TextEditor = ({
                 }
             }
             else if (e.key === 'ArrowDown') {
+                if (currentLineNumber < lines.length) {
+                    updateCurrentLineNumber(currentLineNumber + 1);
+                }
+            }
+            else if (e.key === 'Backspace' &&
+                currentLineNumber > 1 &&
+                window.getSelection().anchorOffset === 0 &&
+                window.getSelection().anchorOffset === window.getSelection().focusOffset
+            ) {
+                const a = lines.slice(0, currentLineNumber - 2);
+                const b = lines.slice(currentLineNumber);
 
+                a.push(lines[currentLineNumber - 2].concat(lines[currentLineNumber - 1]));
+
+                updateLines([
+                    ...a,
+                    ...b,
+                ]);
+                updateCurrentLineNumber(currentLineNumber - 1);
             }
         };
 
@@ -65,7 +84,7 @@ const TextEditor = ({
 
     return (
         <div className={classes.container}>
-            <div id='textContent' className={classes.root}>
+            <div id='textContent' className={classes.root} onMouseDown={() => console.log(window.getSelection())}>
                 {lines.map((line, id) => (
                     <Line text={line} number={id + 1}/>
                 ))}
@@ -78,6 +97,7 @@ const mapStateToProps = ({view}) => {
     return {
         lines: view.lines,
         currentLineNumber: view.currentLineNumber,
+        currentLinePosition: view.currentLinePosition,
     };
 };
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
+import logo from '../../picSrc/logo.png';
 
 const useStyles = makeStyles({
     root: {
@@ -11,14 +12,17 @@ const useStyles = makeStyles({
         color: 'white',
         fontSize: '8vh',
     },
+    logo: {
+        maxHeight: '90%',
+    }
 });
 
-const Header = ({ title }) => {
+const Header = () => {
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
-            {title}
+            <img className={classes.logo} src={logo} alt='logo'/>
         </div>
     )
 };
