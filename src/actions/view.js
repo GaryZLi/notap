@@ -20,3 +20,8 @@ export const updateLineText = (text, lineNumber) => ({
     text,
     lineNumber,
 })
+
+export const updateLineType = lineNumber => ({
+    type: types.UPDATE_LINE_TYPE,
+    lineNumber,
+});

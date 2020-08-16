@@ -59,7 +59,7 @@ const Code = ({
             ref={containerRef}
             onMouseDown={() => updateCurrentLineNumber(number)}
         >
-            <SyntaxHighlighter customStyle={{minHeight: 30, margin: 0}} style={gruvboxDark} language={line.language}>
+            <SyntaxHighlighter customStyle={{minHeight: 30, margin: '5px 0px 5px 0px'}} style={gruvboxDark} language={line.language}>
                 {line.text}
             </SyntaxHighlighter>
         </div>

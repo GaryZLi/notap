@@ -5,7 +5,7 @@ import Line from '../../Components/Line';
 import Code from '../../Components/Code';
 import { 
     updateLines,
-    updateCurrentLineNumber
+    updateCurrentLineNumber,
 } from '../../actions/view';
 
 const useStyles = makeStyles({
@@ -32,7 +32,7 @@ const TextEditor = ({
     updateCurrentLineNumber,
 }) => {
     const classes = useStyles();
-
+console.log(lines)
     useEffect(() => {
         const handleKeyPress = e => {
             if (e.key === 'Enter') {
@@ -90,6 +90,11 @@ const TextEditor = ({
         return () => document.removeEventListener('keydown', handleKeyPress);
     }, [lines, currentLineNumber, updateLines, updateCurrentLineNumber]);
 
+
+    // useEffect(() => {
+    //     console.log('changing')
+    // }, [updateLineType]);
+
     return (
         <div className={classes.container}>
             <div id='textContent' className={classes.root}>
@@ -119,4 +124,4 @@ const mapDispatchToProps = {
     updateCurrentLineNumber,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TextEditor);
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(TextEditor, (a, b) => console.log(a,b)));

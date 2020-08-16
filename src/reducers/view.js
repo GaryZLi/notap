@@ -1,10 +1,13 @@
 import * as types from '../action-types/view';
+import { act } from '@testing-library/react';
 
 export const initialState = {
     currentLineNumber: 1,
-    lines: ['', {text: '', language: 'javascript'}],
+    lines: [''],
     currentLineText: '',
 };
+
+let temp;
 
 const viewReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -27,19 +30,43 @@ const viewReducer = (state = initialState, action) => {
             }
     
         case types.UPDATE_LINE_TEXT:
-            const lines = state.lines;
+            temp = state.lines;
 
-            if (typeof lines[action.lineNumber - 1] === 'string') {
-                lines[action.lineNumber - 1] = action.text;
+            if (typeof temp[action.lineNumber - 1] === 'string') {
+                temp[action.lineNumber - 1] = action.text;
             }
             else {
-                lines[action.lineNumber - 1].text = action.text;
+                temp[action.lineNumber - 1].text = action.text;
             }
 
             return {
                 ...state,
-                lines,
+                lines: temp,
             }
+
+        case types.UPDATE_LINE_TYPE:
+            temp = [
+                ...state.lines
+            ];
+
+            if (typeof temp[action.lineNumber - 1] === 'string') {
+                temp[action.lineNumber - 1] = {
+                    text: temp[action.lineNumber - 1].text || '',
+                    language: 'javascript',
+                }
+
+                if (action.lineNumber === state.lines.length) {
+                    temp.push('');
+                }
+            }
+            else {
+                temp[action.lineNumber - 1] = temp[action.lineNumber - 1].text;
+            }
+
+            return {
+                ...state,
+                lines: temp,
+            };
 
         default:
             return state;
