@@ -1,5 +1,4 @@
 import React from 'react';
-import firebase from './Firebase';
 import Container from './Containers';
 import Header from './Containers/Header';
 import Toolbar from './Containers/Toolbar';
