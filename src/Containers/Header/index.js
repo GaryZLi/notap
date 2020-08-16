@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import logo from '../../picSrc/logo.png';
+import logo from '../../picSrc/Notapp.png';
 
 const useStyles = makeStyles({
     root: {

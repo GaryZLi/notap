@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Code:regular,bold,italic&subset=latin,latin-ext');
+body {
+  font-family: 'Fira Code', sans-serif
+}
+.heading {
+  font-weight: 700;
+}
+.subheading {
+  font-weight: 300;
+}

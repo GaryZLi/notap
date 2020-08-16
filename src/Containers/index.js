@@ -6,7 +6,7 @@ const styles = {
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: '#1C1C1C',
+        backgroundColor: '#202020',
     },
 };
 
