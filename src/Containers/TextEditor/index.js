@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import Line from '../../Components/Line';
+import Code from '../../Components/Code';
 import { 
     updateLines,
     updateCurrentLineNumber
@@ -34,25 +35,28 @@ const TextEditor = ({
 
     useEffect(() => {
         const handleKeyPress = e => {
+            // console.log(window.getSelection().toString())
             if (e.key === 'Enter') {
-                if (window.getSelection().anchorOffset === window.getSelection().focusOffset) {
-                    lines.splice(
-                        currentLineNumber-1,
-                        1,
-                        lines[currentLineNumber-1].slice(0, window.getSelection().anchorOffset),
-                        lines[currentLineNumber-1].slice(window.getSelection().anchorOffset)
-                    );
+                if (typeof lines[currentLineNumber-1] === 'string') {
+                    if (window.getSelection().anchorOffset === window.getSelection().focusOffset) {
+                        lines.splice(
+                            currentLineNumber-1,
+                            1,
+                            lines[currentLineNumber-1].slice(0, window.getSelection().anchorOffset),
+                            lines[currentLineNumber-1].slice(window.getSelection().anchorOffset)
+                        );
+                    }
+                    else {
+                        lines.splice(
+                            currentLineNumber-1,
+                            1,
+                            '',
+                        );
+                    }
+                    
+                    updateLines(lines);
+                    updateCurrentLineNumber(currentLineNumber + 1);
                 }
-                else {
-                    lines.splice(
-                        currentLineNumber-1,
-                        1,
-                        '',
-                    );
-                }
-                
-                updateLines(lines);
-                updateCurrentLineNumber(currentLineNumber + 1);
             }
             else if (e.key === 'ArrowUp') {
                 if (currentLineNumber > 1) {
@@ -87,38 +91,17 @@ const TextEditor = ({
         return () => document.removeEventListener('keydown', handleKeyPress);
     }, [lines, currentLineNumber, updateLines, updateCurrentLineNumber]);
 
-
-
-    function selectText(node) {
-    //     node = node.target;
-    // // console.log(window.getSelection().getRangeAt(1))
-    //     if (document.body.createTextRange) {
-    //         const range = document.body.createTextRange();
-    //         range.moveToElementText(node);
-    //         range.select();
-    //     } else if (window.getSelection) {
-    //         console.log('hehed')
-
-    //         const selection = window.getSelection();
-    //         const range = document.createRange();
-    //         console.log(range)
-    //         range.selectNodeContents(node);
-    //         selection.removeAllRanges();
-    //         selection.addRange(range);
-    //     } else {
-    //         console.warn("Could not select text in node: Unsupported browser.");
-    //     }
-
-        // console.log(node.target)
-    }
-
-
     return (
         <div className={classes.container}>
-            <div id='textContent' className={classes.root} onMouseDown={selectText} onMouseMove={e => console.log(window.getSelection())}>
-                {lines.map((line, id) => (
-                    <Line text={line} number={id + 1}/>
-                ))}
+            <div id='textContent' className={classes.root}>
+                {lines.map((line, id) => {
+                    if (typeof line === 'string') {
+                        return <Line key={id} text={line} number={id + 1}/>
+                    }
+                    else {
+                        return <Code key={id} line={line} number={id + 1} />
+                    }
+                })}
             </div>
         </div>
     );

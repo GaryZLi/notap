@@ -12,16 +12,8 @@ const styles = {
 
 const Container = ({ children }) => {
     return (
-        // <div style={styles.root}>
-        //     {children}
-        // </div>
-        <div>
-            <textarea>
-            
-            </textarea>
-            <textarea>
-            
-        </textarea>
+        <div style={styles.root}>
+            {children}
         </div>
     )
 };

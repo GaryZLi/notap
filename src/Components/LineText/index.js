@@ -45,8 +45,7 @@ const LineText = ({
         const text = e.target.innerText.trim();
         updateLineText(text, number);
         updateCurrentLineText(text);
-    };
-    
+    };  
 
     return (
         <div className={classes.root}
@@ -55,7 +54,6 @@ const LineText = ({
             suppressContentEditableWarning
             contentEditable
             onInput={typing}
-            onMouseOver={e => console.log(e.target)}
         >
             {text}
         </div>

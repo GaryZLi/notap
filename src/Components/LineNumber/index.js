@@ -6,9 +6,9 @@ const useStyles = makeStyles({
         height: '100%',
         minWidth: 40,
         width: 40,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        // display: 'flex',
+        // alignItems: 'center',
+        // justifyContent: 'center',
         userSelect: 'none',
     },
 });
@@ -17,7 +17,10 @@ const LineNumber = ({number}) => {
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
+        <div className={classes.root}
+            unselectable="on"
+            // onSelect={e => e.preventDefault()}
+        >
             {number}
         </div>
     )
