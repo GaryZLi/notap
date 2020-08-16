@@ -32,19 +32,26 @@ const TextEditor = ({
 }) => {
     const classes = useStyles();
 
-    // window.getSelection().anchorOffset
-    // window.getSelection().extentOffset
     useEffect(() => {
         const handleKeyPress = e => {
-            if (e.key === 'Enter' &&
-                window.getSelection().anchorOffset === window.getSelection().focusOffset
-            ) {
-                lines.splice(
-                    currentLineNumber-1,
-                    1,
-                    lines[currentLineNumber-1].slice(0, window.getSelection().anchorOffset),
-                    lines[currentLineNumber-1].slice(window.getSelection().anchorOffset)
-                );
+            if (e.key === 'Enter') {
+                if (window.getSelection().anchorOffset === window.getSelection().focusOffset) {
+                    lines.splice(
+                        currentLineNumber-1,
+                        1,
+                        lines[currentLineNumber-1].slice(0, window.getSelection().anchorOffset),
+                        lines[currentLineNumber-1].slice(window.getSelection().anchorOffset)
+                    );
+                }
+                else {
+                    lines.splice(
+                        currentLineNumber-1,
+                        1,
+                        '',
+                    );
+                }
+
+                
                 
                 updateLines(lines);
                 updateCurrentLineNumber(currentLineNumber + 1);
