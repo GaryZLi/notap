@@ -16,5 +16,5 @@ def process_text():
     editor = QtWidgets.QPlainTextEdit()
     highlighter = syntax.PythonHighlighter(editor.document())
     processed_code = highlighter.highlightBlock(data["data"])
-
+    del app
     return {"data": processed_code}
