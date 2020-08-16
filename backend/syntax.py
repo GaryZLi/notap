@@ -215,7 +215,7 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
                 print("length: {}".format(length))
                 print("color: {}".format(self.colors[idx]))
                 returnList.append(
-                    {"text": expression.cap(nth), "configurations": self.colors[idx]}
+                    {"text": expression.cap(nth), "styles": self.colors[idx]}
                 )
                 self.setFormat(index, length, format)
                 index = expression.indexIn(text, index + length)
