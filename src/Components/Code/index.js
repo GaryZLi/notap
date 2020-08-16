@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { gruvboxDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { darcula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { makeStyles } from '@material-ui/styles';
 import {
     updateCurrentLineText,
@@ -59,7 +59,7 @@ const Code = ({
             ref={containerRef}
             onMouseDown={() => updateCurrentLineNumber(number)}
         >
-            <SyntaxHighlighter customStyle={{minHeight: 30, margin: '5px 0px 5px 0px'}} style={gruvboxDark} language={line.language}>
+            <SyntaxHighlighter customStyle={{minHeight: 30, margin: '5px 0px 5px 0px'}} style={darcula} language={line.language}>
                 {line.text}
             </SyntaxHighlighter>
         </div>

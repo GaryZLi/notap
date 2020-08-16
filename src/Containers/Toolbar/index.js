@@ -46,24 +46,79 @@ const useStyles = makeStyles({
 
 const Toolbar = ({
     currentLineNumber,
-    updateLines,
+    currentLineText,
     updateLineType,
 }) => {
     const classes = useStyles();
 
+    const pasteHtmlAtCaret = (html, style) => {
+        console.log(window.getSelection())
+
+        let sel, range;
+        if (window.getSelection) {
+            // IE9 and non-IE
+            sel = window.getSelection();
+            if (sel.getRangeAt && sel.rangeCount) {
+                range = sel.getRangeAt(0);
+                range.deleteContents();
+    
+                // Range.createContextualFragment() would be useful here but is
+                // non-standard and not supported in all browsers (IE9, for one)
+                const el = document.createElement("div");
+                el.innerHTML = html;
+                if (style) {
+                    el.firstChild.style[style.key] = style.val;
+console.log(style)
+
+                }
+console.log(el.firstChild)
+                let frag = document.createDocumentFragment(), node, lastNode;
+                while ( (node = el.firstChild) ) {
+                    lastNode = frag.appendChild(node);
+                }
+                range.insertNode(frag);
+                
+                // Preserve the selection
+                if (lastNode) {
+                    range = range.cloneRange();
+                    range.setStartAfter(lastNode);
+                    range.collapse(true);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
+            }
+        } else if (document.selection && document.selection.type !== "Control") {
+            // IE < 9
+            document.selection.createRange().pasteHTML(html);
+        }
+    }
+    // insertNodeOverSelection(document.createTextNode('[NODE]'), window.getSelection().anchorNode)}
+
     const handleClick = type => {
         if (type === 'code') {
             updateLineType(currentLineNumber)
-        } 
+        }
+        else if (type === 'highlight') {
+            pasteHtmlAtCaret('<span>hi</span>', {
+                key: 'backgroundColor',
+                val: 'red',
+            })
+        }
+        else if (type === 'italic') {
+            pasteHtmlAtCaret(`<span>${currentLineText.slice(window.getSelection().anchorOffset, window.getSelection().focusOffset)}</span>`, {
+                key: 'fontStyle',
+                val: 'italic',
+            })
+        }
     }
 
     return (
         <div className={classes.container}>
             <div className={classes.root}>
-                <img className={classes.tool} src={bold} alt='bold'/>
+                <img className={classes.tool} src={bold} alt='bold' onClick={() => pasteHtmlAtCaret(`<b>hi</b>`)}/>
                 <img className={classes.tool} src={color} alt='color'/>
-                <img className={classes.tool} src={highlight} alt='highlight'/>
-                <img className={classes.tool} src={italic} alt='italic'/>
+                <img className={classes.tool} src={highlight} alt='highlight' onClick={() => handleClick('highlight')}/>
+                <img className={classes.tool} src={italic} alt='italic' onClick={() => handleClick('italic')}/>
                 <img className={classes.tool} src={underline} alt='underline'/>
                 <img className={classes.tool} src={left} alt='left'/>
                 <img className={classes.tool} src={center} alt='center'/>
@@ -80,6 +135,7 @@ const Toolbar = ({
 const mapStateToProps = ({view}) => {
     return {
         currentLineNumber: view.currentLineNumber,
+        currentLineText: view.currentLineText,
     };
 };
 

@@ -32,7 +32,7 @@ const TextEditor = ({
     updateCurrentLineNumber,
 }) => {
     const classes = useStyles();
-console.log(lines)
+
     useEffect(() => {
         const handleKeyPress = e => {
             if (e.key === 'Enter') {
@@ -124,4 +124,4 @@ const mapDispatchToProps = {
     updateCurrentLineNumber,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(React.memo(TextEditor, (a, b) => console.log(a,b)));
+export default connect(mapStateToProps, mapDispatchToProps)(TextEditor);

@@ -1,5 +1,4 @@
 import * as types from '../action-types/view';
-import { act } from '@testing-library/react';
 
 export const initialState = {
     currentLineNumber: 1,
