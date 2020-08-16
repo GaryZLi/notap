@@ -3,11 +3,12 @@
 
 import sys
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from PySide2 import QtWidgets
 import syntax
 
 app = Flask(__name__)
-app.config["CORS_HEADERS"] = "Content-Type"
+CORS(app)
 qapp = QtWidgets.QApplication(sys.argv)
 
 
