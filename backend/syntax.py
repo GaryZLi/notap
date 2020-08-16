@@ -190,16 +190,7 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
     def highlightBlock(self, text):
         """Apply syntax highlighting to the given block of text.
         """
-        """
-        Modify this function to take in text, and return the list of dictionaries
-        that contain information about each block of text
-        Main things left:
-            - Grab the actual text that's being formatted
-            - Compile everything into the format that we specified
-              for the return value
-        """
-
-        returnList = []
+        returnDict = dict()
 
         # Do other syntax formatting
         idx = 0
@@ -214,9 +205,9 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
                 print("index: {}".format(index))
                 print("length: {}".format(length))
                 print("color: {}".format(self.colors[idx]))
-                returnList.append(
-                    {"text": expression.cap(nth), "styles": self.colors[idx]}
-                )
+                returnDict[expression.cap(nth)] = {
+                    "styles": self.colors[idx],
+                }
                 self.setFormat(index, length, format)
                 index = expression.indexIn(text, index + length)
             idx += 1
@@ -228,8 +219,8 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
         if not in_multiline:
             in_multiline = self.match_multiline(text, *self.tri_double)
 
-        print(returnList)
-        return returnList
+        print(returnDict)
+        return returnDict
 
     def match_multiline(self, text, delimiter, in_state, style):
         """Do highlighting of multi-line strings. ``delimiter`` should be a
