@@ -1,26 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import firebase from './Firebase';
+import Container from './Containers';
+import Header from './Containers/Header';
+import Toolbar from './Containers/Toolbar';
+import TextEditor from './Containers/TextEditor';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+// const fs = firebase.firestore();
+
+const App = () => {
+    // const users = fs.collection('users');
+
+    return (
+        <Container>
+            <Header title={'notap'}/>
+            <Toolbar/>
+            <TextEditor/>
+        </Container>
+    );
+};
 
 export default App;
