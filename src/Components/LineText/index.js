@@ -55,6 +55,7 @@ const LineText = ({
             suppressContentEditableWarning
             contentEditable
             onInput={typing}
+            onMouseOver={e => console.log(e.target)}
         >
             {text}
         </div>

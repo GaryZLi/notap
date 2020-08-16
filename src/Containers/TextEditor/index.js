@@ -50,8 +50,6 @@ const TextEditor = ({
                         '',
                     );
                 }
-
-                
                 
                 updateLines(lines);
                 updateCurrentLineNumber(currentLineNumber + 1);
@@ -89,9 +87,35 @@ const TextEditor = ({
         return () => document.removeEventListener('keydown', handleKeyPress);
     }, [lines, currentLineNumber, updateLines, updateCurrentLineNumber]);
 
+
+
+    function selectText(node) {
+    //     node = node.target;
+    // // console.log(window.getSelection().getRangeAt(1))
+    //     if (document.body.createTextRange) {
+    //         const range = document.body.createTextRange();
+    //         range.moveToElementText(node);
+    //         range.select();
+    //     } else if (window.getSelection) {
+    //         console.log('hehed')
+
+    //         const selection = window.getSelection();
+    //         const range = document.createRange();
+    //         console.log(range)
+    //         range.selectNodeContents(node);
+    //         selection.removeAllRanges();
+    //         selection.addRange(range);
+    //     } else {
+    //         console.warn("Could not select text in node: Unsupported browser.");
+    //     }
+
+        // console.log(node.target)
+    }
+
+
     return (
         <div className={classes.container}>
-            <div id='textContent' className={classes.root} onMouseDown={() => console.log(window.getSelection())}>
+            <div id='textContent' className={classes.root} onMouseDown={selectText} onMouseMove={e => console.log(window.getSelection())}>
                 {lines.map((line, id) => (
                     <Line text={line} number={id + 1}/>
                 ))}

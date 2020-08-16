@@ -2,7 +2,7 @@ import * as types from '../action-types/view';
 
 export const initialState = {
     currentLineNumber: 1,
-    lines: [[]],
+    lines: [''],
     currentLineText: '',
 };
 
