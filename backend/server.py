@@ -26,5 +26,5 @@ def process_text():
     styled_token_list = []
     for token in data["body"]["lst"]:
         style = processed_code.get(token, default_style)
-        styled_token_list.append({token: style})
+        styled_token_list.append({"word": token, "style": {"color": style["styles"]}})
     return jsonify({"data": styled_token_list})
