@@ -20,11 +20,11 @@ def process_text():
     highlighter = syntax.PythonHighlighter(editor.document())
     # processed code will be a dict where the keys are the tokens
     # {"token": {"styles": "blue"}}
-    processed_code = highlighter.highlightBlock(data["str"])
+    processed_code = highlighter.highlightBlock(data["body"]["str"])
     # using processed code, make a new list that has everythang using the array as order
     default_style = {"styles": "white"}
     styled_token_list = []
-    for token in data["lst"]:
+    for token in data["body"]["lst"]:
         style = processed_code.get(token, default_style)
         styled_token_list.append({token: style})
     return jsonify({"data": styled_token_list})
