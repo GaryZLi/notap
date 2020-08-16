@@ -12,7 +12,7 @@ const App = () => {
 
     return (
         <Container>
-            <Header title={'notap'}/>
+            <Header/>
             <Toolbar/>
             <TextEditor/>
         </Container>

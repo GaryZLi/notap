@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import {
     updateCurrentLineText,
-    updateLineText
+    updateLineText,
 } from '../../actions/view';
 
 const useStyles = makeStyles({
@@ -11,9 +11,9 @@ const useStyles = makeStyles({
         height: '100%',
         width: '100%',
         maxWidth: '100%',
-        // display: 'flex',
-        // alignItems: 'center',
-        // flexWrap: 'wrap',
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
         outline: 'none',
         border: 'none',
         backgroundColor: 'inherit',
@@ -33,23 +33,20 @@ const LineText = ({
     const classes = useStyles();
     const containerRef = useRef();
 
-    // fix the focus
     useEffect(() => {
         if (currentLineNumber === number) {
             containerRef.current.focus();
             updateCurrentLineText(text);
-
-            console.log(window.getSelection())
         }
-    }, [number, currentLineNumber, updateCurrentLineText, text]);
+
+    }, [number, currentLineNumber, updateCurrentLineText, text, containerRef]);
 
     const typing = e => {
         const text = e.target.innerText.trim();
         updateLineText(text, number);
-        updateCurrentLineText(e.target.innerText.trim());
-        // e.preventDefault();
-        document.execCommand('insertHTML', false);
+        updateCurrentLineText(text);
     };
+    
 
     return (
         <div className={classes.root}
@@ -58,6 +55,7 @@ const LineText = ({
             suppressContentEditableWarning
             contentEditable
             onInput={typing}
+            onMouseOver={e => console.log(e.target)}
         >
             {text}
         </div>

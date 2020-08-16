@@ -2,7 +2,7 @@ import * as types from '../action-types/view';
 
 export const initialState = {
     currentLineNumber: 1,
-    lines: [[]],
+    lines: [''],
     currentLineText: '',
 };
 
@@ -27,10 +27,8 @@ const viewReducer = (state = initialState, action) => {
             }
     
         case types.UPDATE_LINE_TEXT:
-            console.log(action.lineNumber)
             const lines = state.lines;
             lines[action.lineNumber - 1] = action.text;
-            console.log();
             return {
                 ...state,
                 lines,

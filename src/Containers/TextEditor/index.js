@@ -26,7 +26,6 @@ const useStyles = makeStyles({
 
 const TextEditor = ({
     lines,
-    currentLineText,
     currentLineNumber,
     updateLines,
     updateCurrentLineNumber,
@@ -36,15 +35,22 @@ const TextEditor = ({
     useEffect(() => {
         const handleKeyPress = e => {
             if (e.key === 'Enter') {
-                lines.splice(currentLineNumber, 0, []);
-                // const a = lines.slice(0, currentLineNumber);
-                // a.push([]);
-                // const b = lines.slice(currentLineNumber);
-                // updateLines([
-                //     ...a,
-                //     ...b
-                // ]);
-
+                if (window.getSelection().anchorOffset === window.getSelection().focusOffset) {
+                    lines.splice(
+                        currentLineNumber-1,
+                        1,
+                        lines[currentLineNumber-1].slice(0, window.getSelection().anchorOffset),
+                        lines[currentLineNumber-1].slice(window.getSelection().anchorOffset)
+                    );
+                }
+                else {
+                    lines.splice(
+                        currentLineNumber-1,
+                        1,
+                        '',
+                    );
+                }
+                
                 updateLines(lines);
                 updateCurrentLineNumber(currentLineNumber + 1);
             }
@@ -54,7 +60,25 @@ const TextEditor = ({
                 }
             }
             else if (e.key === 'ArrowDown') {
+                if (currentLineNumber < lines.length) {
+                    updateCurrentLineNumber(currentLineNumber + 1);
+                }
+            }
+            else if (e.key === 'Backspace' &&
+                currentLineNumber > 1 &&
+                window.getSelection().anchorOffset === 0 &&
+                window.getSelection().anchorOffset === window.getSelection().focusOffset
+            ) {
+                const a = lines.slice(0, currentLineNumber - 2);
+                const b = lines.slice(currentLineNumber);
 
+                a.push(lines[currentLineNumber - 2].concat(lines[currentLineNumber - 1]));
+
+                updateLines([
+                    ...a,
+                    ...b,
+                ]);
+                updateCurrentLineNumber(currentLineNumber - 1);
             }
         };
 
@@ -63,9 +87,35 @@ const TextEditor = ({
         return () => document.removeEventListener('keydown', handleKeyPress);
     }, [lines, currentLineNumber, updateLines, updateCurrentLineNumber]);
 
+
+
+    function selectText(node) {
+    //     node = node.target;
+    // // console.log(window.getSelection().getRangeAt(1))
+    //     if (document.body.createTextRange) {
+    //         const range = document.body.createTextRange();
+    //         range.moveToElementText(node);
+    //         range.select();
+    //     } else if (window.getSelection) {
+    //         console.log('hehed')
+
+    //         const selection = window.getSelection();
+    //         const range = document.createRange();
+    //         console.log(range)
+    //         range.selectNodeContents(node);
+    //         selection.removeAllRanges();
+    //         selection.addRange(range);
+    //     } else {
+    //         console.warn("Could not select text in node: Unsupported browser.");
+    //     }
+
+        // console.log(node.target)
+    }
+
+
     return (
         <div className={classes.container}>
-            <div id='textContent' className={classes.root}>
+            <div id='textContent' className={classes.root} onMouseDown={selectText} onMouseMove={e => console.log(window.getSelection())}>
                 {lines.map((line, id) => (
                     <Line text={line} number={id + 1}/>
                 ))}
@@ -78,6 +128,7 @@ const mapStateToProps = ({view}) => {
     return {
         lines: view.lines,
         currentLineNumber: view.currentLineNumber,
+        currentLinePosition: view.currentLinePosition,
     };
 };
 
